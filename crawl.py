@@ -62,6 +62,24 @@ def get_url_from_object(parsed_url):
     return parsed_url.scheme + "://" + parsed_url.netloc + parsed_url.path
 
 
+def sanitize_text(text):
+    # Remove whitespace from the beginning and end of the text
+    text = text.strip()
+
+    # Remove all newlines from the text
+    text = text.replace("\n", " ")
+
+    # Remove all extra spaces from the text
+    text = " ".join(text.split())
+
+    # Remove all special characters from the text except punctuation but keep numbers
+    text = "".join([c for c in text if c.isalnum()
+                   or c.isspace() or c in ".,?!:;'-"])
+
+    # Return the sanitized text
+    return text
+
+
 # Create a class to parse the HTML and get the hyperlinks
 class HyperlinkParser(HTMLParser):
     def __init__(self):
@@ -185,6 +203,10 @@ def crawl(url):
                 print("Unable to parse page " + url +
                       " due to JavaScript being required")
 
+            text = sanitize_text(text)
+
+            text = f"{url}|{text}"
+
             # Otherwise, write the text to the file in the text directory
             f.write(text)
 
@@ -195,47 +217,35 @@ def crawl(url):
                 seen.add(link)
 
 
-def sanitize_text(text):
-    # Remove whitespace from the beginning and end of the text
-    text = text.strip()
+if __name__ == '__main__':
+    print("Crawling...")
+    crawl(base_url)
 
-    # Remove all newlines from the text
-    text = text.replace("\n", " ")
+    # Create a list to store the text files
+    sources = []
 
-    # Remove all extra spaces from the text
-    text = " ".join(text.split())
+    # Get all the text files in the text directory
+    for file in os.listdir("text/" + domain + "/"):
 
-    # Remove all special characters from the text except punctuation but keep numbers
-    text = "".join([c for c in text if c.isalnum()
-                   or c.isspace() or c in ".,?!:;'-"])
+        # Open the file and read the text
+        with open("text/" + domain + "/" + file, "r") as f:
+            text = f.read()
+            url = text.split("|")[0]
+            text = text.split("|")[1]
+            sources.append((url, text))
 
-    # Return the sanitized text
-    return text
+    print("Creating chunks from the webpages...")
+    docs = []
+    for (url, source) in sources:
+        texts = text_splitter.split_text(source)
+        docs.extend(
+            [Document(page_content=t, metadata={"url": url}) for t in texts])
 
+    print("Saving sources in the Pinecone index...")
+    index_name = os.getenv("PINECONE_INDEX_NAME")
+    namespace = os.getenv("PINECONE_INDEX_NAME")
 
-print("Crawling...")
-crawl(base_url)
+    docsearch = Pinecone.from_documents(
+        docs, embeddings, index_name=index_name, namespace=namespace)
 
-# Create a list to store the text files
-sources = []
-
-# Get all the text files in the text directory
-for file in os.listdir("text/" + domain + "/"):
-
-    # Open the file and read the text
-    with open("text/" + domain + "/" + file, "r") as f:
-        text = f.read()
-        sanitized_text = sanitize_text(text)
-        sources.append(sanitized_text)
-
-print("Creating chunks from the webpages...")
-docs = []
-for source in sources:
-    texts = text_splitter.split_text(source)
-    docs.extend([Document(page_content=t) for t in texts])
-
-print("Saving sources in the Pinecone index...")
-index_name = os.getenv("PINECONE_INDEX_NAME")
-docsearch = Pinecone.from_documents(docs, embeddings, index_name=index_name)
-
-print("Done! ✅")
+    print("Done! ✅")

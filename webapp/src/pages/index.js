@@ -87,11 +87,26 @@ export default function Home() {
                   </p>
                 </div>
                 <p className="text-gray-700 text-base">{query.answer}</p>
-                {query.total_tokens && (
+                <div className="space-x-2 mt-2">
+                  {query.sources && (
+                    <span className="text-gray-400 text-xs">Sources: </span>
+                  )}
+                  {query.sources?.map((source, index) => (
+                    <a
+                      href={source}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-xs py-1 px-2 bg-gray-100 text-gray-700 font-medium rounded"
+                    >
+                      {index + 1}
+                    </a>
+                  ))}
+                </div>
+                {/* {query.total_tokens && (
                   <p className="text-gray-400 text-xs mt-2">
                     {query.total_tokens} tokens processed
                   </p>
-                )}
+                )} */}
               </li>
             ))}
           </ul>
