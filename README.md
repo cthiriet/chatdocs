@@ -57,7 +57,7 @@ It will create a Python virtual environment and install the dependencies.
 ```sh
 python3 crawl.py \
   --domain stripe.com \
-  --url https://stripe.com/docs \
+  --url https://stripe.com/docs/atlas \
   --excludes https://stripe.com/docs/api,https://stripe.com/docs/js,https://stripe.com/docs/cli
 ```
 

@@ -27,10 +27,7 @@ export function Header() {
   return (
     <header
       className={clsx(
-        "sticky top-0 z-50 flex flex-wrap items-center justify-between bg-white px-4 py-5 shadow-md shadow-slate-900/5 transition duration-500 dark:shadow-none sm:px-6 lg:px-8",
-        isScrolled
-          ? "dark:bg-slate-900/95 dark:backdrop-blur dark:[@supports(backdrop-filter:blur(0))]:bg-slate-900/75"
-          : "dark:bg-transparent"
+        "sticky top-0 z-50 flex flex-wrap items-center justify-between bg-white px-4 py-5 shadow-md shadow-slate-900/5 transition duration-500 sm:px-6 lg:px-8"
       )}
     >
       <div className="relative flex flex-grow basis-0 items-center">
@@ -44,7 +41,7 @@ export function Header() {
           className="group"
           aria-label="GitHub"
         >
-          <GitHubIcon className="h-6 w-6 fill-slate-400 group-hover:fill-slate-500 dark:group-hover:fill-slate-300" />
+          <GitHubIcon className="h-6 w-6 fill-slate-400 group-hover:fill-slate-500" />
         </Link>
       </div>
     </header>

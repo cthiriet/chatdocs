@@ -29,6 +29,7 @@ pinecone.init(api_key=os.environ["PINECONE_API_KEY"],
               environment="us-east1-gcp")
 
 pinecone_index_name = os.environ["PINECONE_INDEX_NAME"]
+namespace = os.environ["PINECONE_INDEX_NAME"]
 
 llm = OpenAI(temperature=0, max_tokens=500)
 embeddings = OpenAIEmbeddings()
@@ -65,17 +66,23 @@ def chatdocs(request):
             pinecone_index_name, embeddings)
 
         qa = VectorDBQA.from_chain_type(llm=llm, chain_type="stuff", vectorstore=docsearch,
-                                        return_source_documents=True)
+                                        return_source_documents=True, search_kwargs={"namespace": namespace})
 
         with get_openai_callback() as cb:
             result = qa({"query": query})
             answer = result["result"]
-            # source_documents = result["source_documents"]
+            source_documents = result["source_documents"]
+
+        sites = []
+        for doc in source_documents:
+            if doc.metadata["url"] not in sites:
+                sites.append(doc.metadata["url"])
 
         return ({
             'id': query_id,
             'query': query,
             'answer': answer,
+            'sources': sites,
             'total_tokens': cb.total_tokens
         }, 200, headers)
 
