@@ -1,0 +1,9 @@
+functions-framework==3.*
+beautifulsoup4
+requests
+openai
+python-dotenv
+tiktoken
+langchain
+nltk
+pinecone-client

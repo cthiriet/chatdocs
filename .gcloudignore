@@ -1,0 +1,11 @@
+assets
+text
+venv
+webapp
+__pycache__
+.pytest_cache
+
+chatdocs.ipynb
+.env.example
+crawl.py
+README.md

@@ -1,0 +1,8 @@
+venv
+.ipynb_checkpoints
+text
+__pycache__
+.pytest_cache
+
+.env
+.env.yaml
