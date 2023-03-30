@@ -21,7 +21,7 @@ const handler = async (req) => {
     const { namespace, query } = await req.json();
 
     await pinecone.init({
-      environment: "us-east1-gcp",
+      environment: process.env.PINECONE_ENV,
       apiKey: process.env.PINECONE_API_KEY,
     });
     const index = pinecone.Index(process.env.PINECONE_INDEX_NAME);

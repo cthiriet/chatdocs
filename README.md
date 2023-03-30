@@ -4,11 +4,12 @@
 
 ChatDocs is an open source project that provides a way to perform Q&A on your online documentation in real-time.
 
-## Prerequisites 🥇
+![Stripe Atlas Showcase](assets/stripe-atlas-showcase.png)
+
+## Prerequisites 📋
 
 This project uses:
 
-- [Google Cloud Platform](https://cloud.google.com/) and [gcloud CLI](https://cloud.google.com/sdk/gcloud) for hosting the Google Cloud Function backend.
 - [OpenAI](https://platform.openai.com/) for generating answers.
 - [Pinecone](https://www.pinecone.io/) for indexing the documentation.
 - [Vercel](https://vercel.com/) for hosting the web application.
@@ -23,7 +24,6 @@ The project is composed of the following components:
 
 - `webapp`: folder containing the frontend code for the Q&A website.
 - `crawl.py`: Python script to crawl a website and index its content in Pinecone.
-- `main.py`: Entrypoint for the Google Cloud Function.
 
 ## Getting Started 🚀
 
@@ -38,15 +38,15 @@ git clone https://github.com/ClemDev2000/chatdocs
 ### Install dependencies
 
 It will create a Python virtual environment and install the dependencies.
+It will also ask your for your **OpenAI** and **Pinecone** credentials.
 
 ```sh
-./setup.sh
+sh setup.sh
 ```
 
 ### Customize the project
 
-1. Fill the `.env` file with your OpenAI and Pinecone credentials.
-2. Edit the `webapp/public/logo.svg` with the logo of your service.
+Edit the `webapp/public/logo.svg` with the logo of your service.
 
 ### Index your documentation
 
@@ -55,6 +55,10 @@ It will create a Python virtual environment and install the dependencies.
 - `excludes` (optional) is a list of URLs you want to exclude from the index. It can be useful if you want to exclude the homepage or the pricing page.
 
 ```sh
+# Activate the Python virtual environment
+source venv/bin/activate
+
+# Index the documentation
 python3 crawl.py \
   --domain stripe.com \
   --url https://stripe.com/docs/atlas \
@@ -66,50 +70,22 @@ python3 crawl.py \
 Open a terminal and run:
 
 ```sh
-functions-framework --target=chatdocs --debug
-```
-
-Your function is now running on [http://localhost:8080](http://localhost:8080).
-
-Open another terminal and run:
-
-```sh
 cd webapp
 npm run dev
 ```
 
 Go to [http://localhost:3000](http://localhost:3000) to see the website.
 
-### Deploy the Google Cloud Function
-
-Deploy the Google Cloud Function by running:
-
-```sh
-PROJECT_ID=$(gcloud config get-value project)
-
-gcloud alpha functions deploy chatdocs \
-  --gen2 \
-  --project=$PROJECT_ID \
-  --region=us-central1 \
-  --runtime=python310 \
-  --source=. \
-  --entry-point=chatdocs \
-  --trigger-http \
-  --allow-unauthenticated \
-  --concurrency=5 \
-  --memory=2Gib \
-  --timeout=120s
-```
-
 ### Deploy the web application on Vercel
 
 - Go to your dashboard and create a new project.
 - Select `Next.js` as the framework preset.
 - Select `webapp` as the root directory.
-- Add an environment variables named `NEXT_PUBLIC_API_URL` with the URL of your Google Cloud Function [that you just deployed](https://console.cloud.google.com/functions/details/us-central1/chatdocs).
+- Copy the content of `webapp/.env.local` into the `Environment Variables` section.
 - Click on `Deploy` and wait for the deployment to finish.
 
 ![Vercel deployment](assets/vercel-setup.png)
+![Environment variables](assets/vercel-env.png)
 
 ## Contributing 🧑‍💻
 

@@ -27,7 +27,7 @@ enc = tiktoken.get_encoding("gpt2")
 
 # initialize pinecone
 pinecone.init(api_key=os.getenv("PINECONE_API_KEY"),
-              environment="us-east1-gcp")
+              environment=os.getenv("PINECONE_ENV"))
 
 text_splitter = NLTKTextSplitter.from_tiktoken_encoder(
     chunk_size=500, chunk_overlap=100)

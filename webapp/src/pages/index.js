@@ -2,20 +2,38 @@ import { EmptyChat } from "@/components/EmptyChat";
 import { Header } from "@/components/Header";
 import { Spinner } from "@/components/Spinner";
 import { PaperAirplaneIcon } from "@heroicons/react/20/solid";
+import clsx from "clsx";
 import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-hot-toast";
+import { remark } from "remark";
+import html from "remark-html";
 import { v4 as uuidv4 } from "uuid";
 
-function Interaction({ query, answer }) {
+function Interaction({ query, answer, last }) {
+  const [htmlAnswer, setHtmlAnswer] = useState("");
+
+  useEffect(() => {
+    (async () => {
+      try {
+        // Use remark to convert markdown into HTML string
+        const processedContent = await remark().use(html).process(answer);
+        const contentHtml = processedContent.toString();
+        setHtmlAnswer(contentHtml);
+      } catch (err) {
+        console.log(err);
+      }
+    })();
+  }, [answer]);
+
   return (
-    <li className="py-6 border-t border-gray-200">
-      <p className="font-semibold font-opensans text-gray-900 text-base mb-3">
+    <li className={clsx("py-6", last ? "" : "border-t border-gray-200")}>
+      <p className="font-bold font-opensans text-gray-900 text-base mb-3">
         {query}
       </p>
-      <p className="text-gray-600 font-medium font-opensans text-base leading-7">
-        {answer}
-      </p>
+      <div className="text-gray-800 font-opensans text-base leading-7 prose max-w-none prose-pre:rounded-xl prose-pre:bg-gray-800">
+        <div dangerouslySetInnerHTML={{ __html: htmlAnswer }} />
+      </div>
     </li>
   );
 }
@@ -121,13 +139,20 @@ function Queries() {
           ref={chatWindowRef}
           className="pb-8 min-h-0 flex-1 overflow-y-auto flex flex-col-reverse max-w-4xl w-full mx-auto"
         >
-          {response && <Interaction query={queryInput} answer={response} />}
+          {response && (
+            <Interaction
+              query={queryInput}
+              answer={response}
+              last={responses.length === 0}
+            />
+          )}
 
-          {responses.map((query) => (
+          {responses.map((query, index) => (
             <Interaction
               key={query.id}
               query={query.query}
               answer={query.answer}
+              last={index === responses.length - 1}
             />
           ))}
         </ul>
