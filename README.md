@@ -2,7 +2,13 @@
 
 <img src="assets/chatdocs.svg" alt="Image description" height="100"/>
 
-ChatDocs is an open-source project that enables you to ask questions about your documentation and receive real-time answers. All you need to do is index your online documentation and deploy the web application, and you're ready to go!
+ChatDocs is an open-source project that enables you to ask questions about your online documentation and receive real-time answers.
+
+How it works:
+
+1. Index your documentation 📝
+2. Deploy the web application 🚀
+3. Ask questions 🤔
 
 ![Stripe Atlas Showcase](assets/stripe-atlas-showcase.png)
 
@@ -35,9 +41,10 @@ To get started with ChatDocs, follow these instructions:
 git clone https://github.com/ClemDev2000/chatdocs
 ```
 
-### Install dependencies
+### Install dependencies and setup the project
 
 It will create a Python virtual environment and install the dependencies.
+
 It will also ask your for your **OpenAI** and **Pinecone** credentials.
 
 ```sh
