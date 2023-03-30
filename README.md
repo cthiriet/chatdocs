@@ -2,7 +2,7 @@
 
 <img src="assets/chatdocs.svg" alt="Image description" height="100"/>
 
-ChatDocs is an open source project that provides a way to perform Q&A on your online documentation in real-time.
+ChatDocs is an open-source project that enables you to ask questions about your documentation and receive real-time answers. All you need to do is index your online documentation and deploy the web application, and you're ready to go!
 
 ![Stripe Atlas Showcase](assets/stripe-atlas-showcase.png)
 
