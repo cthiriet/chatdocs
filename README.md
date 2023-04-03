@@ -53,7 +53,7 @@ sh setup.sh
 
 ### Customize the project
 
-Edit the `webapp/public/logo.svg` with the logo of your service.
+Edit `webapp/public/logo.svg` with the logo of your service.
 
 ### Index your documentation
 
