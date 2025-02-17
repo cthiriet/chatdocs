@@ -106,10 +106,10 @@ We welcome contributions to ChatDocs! To get started, follow these steps:
 
 ## Contact 🤙
 
-If you have any questions or comments about ChatDocs or if you want some help to deploy it for your project, please contact us at [hello@dreamcin.com](mailto:hello@dreamcin.com).
+If you have any questions or comments about ChatDocs or if you want some help to deploy it for your project, please contact us at [clement@cthiriet.com](mailto:clement@cthiriet.com).
 
 We hope you find ChatDocs useful and enjoy using it!
 
 ## Creator 🧑🏼‍🎨
 
-Created by [Clément Thiriet](https://cthiriet.com/). A [DreamCin](https://dreamcin.com/) product.
+Created by [Clément Thiriet](https://cthiriet.com/).
